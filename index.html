@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elysia's Secret Garden</title>
+    <style>
+        /* --- 梦幻背景：流动的彩沙紫 + 香澄红 --- */
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fad0c4, #a18cd1);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- 入口卡片 --- */
+        .welcome-card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 50px;
+            border-radius: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 80%;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,255,255,0.8);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        h1 {
+            color: #aa55dd; /* Arisa Purple */
+            margin-bottom: 10px;
+            font-size: 2em;
+            letter-spacing: 2px;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 1em;
+            font-weight: 300;
+        }
+
+        /* --- 进入按钮 --- */
+        .enter-btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(45deg, #ff3366, #aa55dd);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(170, 85, 221, 0.4);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .enter-btn:hover {
+            transform: scale(1.1); /* 鼠标放上去变大 */
+            box-shadow: 0 8px 25px rgba(170, 85, 221, 0.6);
+        }
+
+        .flower {
+            font-size: 2em;
+            margin-bottom: 20px;
+            display: block;
+            animation: spin 10s linear infinite;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+    </style>
+</head>
+<body>
+
+    <div class="welcome-card">
+        <span class="flower">🌸</span>
+        <h1>Elysia 的<br>Popipa 秘密花园</h1>
+        <p class="subtitle">Welcome to the Secret Base</p>
+        
+        <a href="main.html" class="enter-btn">✨ 进入 / Enter ✨</a>
+    </div>
+
+</body>
+</html>
