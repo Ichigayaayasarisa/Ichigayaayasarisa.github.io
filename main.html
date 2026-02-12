@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Elysia's Popipa Space</title>
+    <style>
+        /* --- 基础样式 --- */
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden; /* 禁止滚动，像个App一样 */
+            background-color: #fecfef; /* 粉色底色兜底 */
+        }
+
+        /* --- 核心容器：保持图片比例，居中显示 --- */
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            background-image: url('IMG_1841.png'); /* 你的大图 */
+            background-size: contain; /* 完整显示图片 */
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        /* --- 隐形热区 (Hotspots) --- */
+        /* 这些方块平时是透明的，点上去会有反应 */
+        .hotspot {
+            position: absolute;
+            /* border: 2px solid red;  调试用，如果你找不到位置，把这行前面的注释去掉 */
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        /* 简单的闪烁动画，提示哪里可以点 */
+        .hotspot::after {
+            content: '';
+            display: block;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 70%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            border-radius: 50%;
+        }
+        .hotspot:active::after { opacity: 1; }
+
+        /* --- 角色位置定位 (百分比定位，适应iPad和手机) --- */
+        
+        /* 1. Saaya (左上) */
+        .pos-saaya { top: 5%; left: 5%; width: 35%; height: 35%; }
+        
+        /* 2. Kasumi (右上) */
+        .pos-kasumi { top: 5%; right: 5%; width: 35%; height: 35%; }
+        
+        /* 3. Tae (左下) */
+        .pos-tae { bottom: 5%; left: 5%; width: 30%; height: 35%; }
+        
+        /* 4. Arisa (右下) */
+        .pos-arisa { bottom: 5%; right: 5%; width: 30%; height: 35%; }
+        
+        /* 5. Rimi (正下中间) */
+        .pos-rimi { bottom: 2%; left: 35%; width: 30%; height: 30%; }
+
+        /* 6. Popipa 全员 (正中间的手势) */
+        .pos-group { 
+            top: 35%; left: 30%; 
+            width: 40%; height: 30%; 
+            border-radius: 50%; /* 中间是圆形的 */
+        }
+
+        /* --- 标题和日历入口 (放在顶部浮层) --- */
+        .overlay-ui {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(5px);
+            text-align: center;
+            z-index: 20;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .title { color: #ff3366; margin: 5px 0; font-size: 1.2em; }
+        .subtitle { font-size: 0.8em; color: #555; }
+        .calendar-link {
+            display: inline-block;
+            margin-top: 5px;
+            font-size: 0.8em;
+            color: #4285F4;
+            text-decoration: none;
+            border: 1px solid #4285F4;
+            padding: 2px 10px;
+            border-radius: 10px;
+        }
+
+        /* --- 弹窗样式 (保持不变) --- */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            backdrop-filter: blur(5px);
+        }
+        .modal img {
+            max-width: 90%;
+            max-height: 70%;
+            border-radius: 15px;
+            box-shadow: 0 0 25px rgba(255,51,102,0.6);
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .close-btn {
+            margin-top: 20px;
+            color: white;
+            font-size: 16px;
+            border: 1px solid rgba(255,255,255,0.5);
+            padding: 8px 24px;
+            border-radius: 20px;
+            cursor: pointer;
+            background: rgba(0,0,0,0.3);
+        }
+        @keyframes popIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="overlay-ui">
+        <h1 class="title">✨ Elysia's Popipa Base ✨</h1>
+        <div class="subtitle">点击角色查看详情 | Click Members</div>
+        <a class="calendar-link" target="_blank" href="https://www.google.com/calendar/render?action=TEMPLATE&text=Poppin%27Party%C3%97Roselia+Joint+Live&dates=20260503T090000Z/20260503T120000Z&location=Ariake+Arena">
+            📅 Next Live: 2026.05.03
+        </a>
+    </div>
+
+    <div class="container">
+        <div class="hotspot pos-saaya" onclick="showImage('IMG_1084.jpeg')"></div>
+        
+        <div class="hotspot pos-kasumi" onclick="showImage('IMG_0672.jpeg')"></div>
+        
+        <div class="hotspot pos-tae" onclick="showImage('IMG_1832.png')"></div>
+        
+        <div class="hotspot pos-arisa" onclick="showImage('033154D2B53E9963C1B4B8D3D8D7062F.png')"></div>
+        
+        <div class="hotspot pos-rimi" onclick="showImage('IMG_1834.png')"></div>
+
+        <div class="hotspot pos-group" onclick="showImage('background.jpg')"></div> 
+    </div>
+
+    <div id="imageModal" class="modal" onclick="closeModal()">
+        <img id="modalImg" src="" alt="Member Image">
+        <div class="close-btn">Close</div>
+    </div>
+
+    <script>
+        function showImage(filename) {
+            var modal = document.getElementById('imageModal');
+            var img = document.getElementById('modalImg');
+            img.src = filename; 
+            modal.style.display = 'flex';
+        }
+        function closeModal() {
+            document.getElementById('imageModal').style.display = 'none';
+        }
+    </script>
+
+</body>
+</html>
