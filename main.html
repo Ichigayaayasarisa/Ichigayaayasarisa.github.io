@@ -87,16 +87,34 @@
         }
         .title { color: #ff3366; margin: 5px 0; font-size: 1.2em; }
         .subtitle { font-size: 0.8em; color: #555; }
-        .calendar-link {
+               /* --- 通用按钮样式 (新) --- */
+        .ui-btn {
             display: inline-block;
-            margin-top: 5px;
-            font-size: 0.8em;
-            color: #4285F4;
+            font-size: 0.85em;
             text-decoration: none;
-            border: 1px solid #4285F4;
-            padding: 2px 10px;
-            border-radius: 10px;
+            padding: 5px 15px;
+            border-radius: 20px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-weight: bold;
+            margin-top: 5px; /* 增加一点顶部间距 */
         }
+        
+        .ui-btn:active { transform: scale(0.95); }
+
+        /* 日历按钮：蓝色系 */
+        .calendar-btn {
+            color: #4285F4;
+            border: 1px solid #4285F4;
+            background: rgba(66, 133, 244, 0.05);
+        }
+
+        /* 故事按钮：有咲紫色系 */
+        .story-btn {
+            color: #aa55dd; 
+            border: 1px solid #aa55dd;
+            background: rgba(170, 85, 221, 0.05);
+        }
+
 
         /* --- 弹窗样式 (保持不变) --- */
         .modal {
@@ -136,13 +154,23 @@
 </head>
 <body>
 
-    <div class="overlay-ui">
+        <div class="overlay-ui">
         <h1 class="title">✨ Elysia's Popipa Base ✨</h1>
         <div class="subtitle">点击角色查看详情 | Click Members</div>
-        <a class="calendar-link" target="_blank" href="https://www.google.com/calendar/render?action=TEMPLATE&text=Poppin%27Party%C3%97Roselia+Joint+Live&dates=20260503T090000Z/20260503T120000Z&location=Ariake+Arena">
-            📅 Next Live: 2026.05.03
-        </a>
+        
+        <div style="margin-top: 10px; display: flex; justify-content: center; gap: 10px;">
+            
+            <a class="ui-btn calendar-btn" target="_blank" href="https://www.google.com/calendar/render?action=TEMPLATE&text=Poppin%27Party%C3%97Roselia+Joint+Live&dates=20260503T090000Z/20260503T120000Z&location=Ariake+Arena">
+                📅 Next Live
+            </a>
+
+            <a class="ui-btn story-btn" target="_blank" href="star-story.pdf.pdf">
+                📖 摘下星星的少女
+            </a>
+            
+        </div>
     </div>
+
 
     <div class="container">
         <div class="hotspot pos-saaya" onclick="showImage('IMG_4860.png')"></div>
