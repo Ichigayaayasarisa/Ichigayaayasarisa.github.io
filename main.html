@@ -16,12 +16,12 @@
             font-family: -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
         }
 
-        /* --- 核心容器：背景图 --- */
+        /* --- 核心容器：页面背景图 --- */
         .container {
             position: relative;
             width: 100%;
             height: 100vh;
-            /* ✅ 这里的名字已经帮你改好了 */
+            /* 页面大背景，保持不变 */
             background-image: url('IMG_1841.png'); 
             background-size: contain; 
             background-position: center;
@@ -34,6 +34,7 @@
             cursor: pointer;
             z-index: 10;
         }
+        /* 点击时的闪烁效果 */
         .hotspot::after {
             content: ''; display: block; width: 100%; height: 100%;
             background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 70%);
@@ -49,7 +50,7 @@
         .pos-rimi { bottom: 2%; left: 35%; width: 30%; height: 30%; }
         .pos-group { top: 35%; left: 30%; width: 40%; height: 30%; border-radius: 50%; }
 
-        /* --- 顶部 UI (水晶浮岛风格) --- */
+        /* --- 顶部 UI (水晶浮岛) --- */
         .overlay-ui {
             position: absolute;
             top: 30px; left: 50%; transform: translateX(-50%);
@@ -95,7 +96,7 @@
         /* --- 弹窗基础样式 --- */
         .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.6); /* 背景稍微暗一点，突出卡片 */
+            background-color: rgba(0,0,0,0.6);
             z-index: 1000;
             justify-content: center; align-items: center;
             backdrop-filter: blur(8px);
@@ -106,7 +107,7 @@
             position: relative;
             width: 90%;
             max-width: 800px;
-            height: 60vh; /* 容器高度 */
+            height: 60vh;
             min-height: 400px;
         }
 
@@ -114,7 +115,7 @@
         .stack-card {
             position: absolute;
             top: 0;
-            height: 100%; /* 高度占满 100% */
+            height: 100%; /* 高度占满 */
             width: 75%;   /* 宽度占 75% */
             border-radius: 20px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.4);
@@ -122,21 +123,22 @@
             cursor: pointer;
             overflow: hidden;
             background: white;
+            /* 默认层级 */
+            z-index: 1; 
         }
 
-        /* 激活状态：层级最高，轻微放大 */
+        /* 🔥 关键：被激活的卡片层级变成 100，保证在最上面 */
         .active-card {
-            z-index: 10;
-            transform: scale(1.02);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            border: 2px solid rgba(255,255,255,0.8);
+            z-index: 100 !important;
+            transform: scale(1.03); /* 稍微放大一点点 */
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            border: 2px solid rgba(255,255,255,0.9);
         }
 
         /* --- 左侧卡片：图片 --- */
         .card-visual {
             left: 0; /* 靠左 */
             background: #f0f0f0;
-            z-index: 2; /* 默认在上面 */
         }
         .card-visual img { width: 100%; height: 100%; object-fit: cover; }
 
@@ -144,16 +146,15 @@
         .card-info {
             right: 0; /* 靠右 */
             background: rgba(255, 255, 255, 0.95);
-            z-index: 1; /* 默认在下面 */
             display: flex; flex-direction: column; justify-content: center;
             border-left: 1px solid #eee;
         }
 
         .info-content {
-            padding: 40px; /* 内边距大一点 */
+            padding: 40px;
             overflow-y: auto;
-            /* 为了防止字被遮住，给右边卡片的左侧留一点空白，因为左边会被图片遮住 */
-            padding-left: 10%; 
+            /* 左边留白，防止被上面的图遮住时看不见字 */
+            padding-left: 15%; 
         }
 
         #modalName { margin: 0; font-size: 2em; font-weight: bold; margin-bottom: 10px; }
@@ -175,11 +176,10 @@
         }
         .close-btn-inner:hover { background: #ddd; }
 
-        /* 手机端适配：如果不希望完全重叠太难点，可以稍微调整宽度 */
         @media (max-width: 600px) {
             .stack-container { height: 70vh; width: 95%; }
-            .stack-card { width: 85%; } /* 手机上稍微宽一点 */
-            .info-content { padding: 20px; padding-left: 20px; } /* 手机上内边距减小 */
+            .stack-card { width: 85%; }
+            .info-content { padding: 20px; padding-left: 20px; }
             #modalName { font-size: 1.5em; }
         }
     </style>
@@ -230,17 +230,18 @@
     </div>
 
     <script>
-        // --- 角色档案库 ---
+        // --- 角色档案库 (已更新你提供的文件名) ---
         const memberData = {
             'kasumi': {
                 name: '户山 香澄 (Toyama Kasumi)', role: 'Gt. & Vo.', birthday: '7月14日', color: '#ff3366',
+                // 👇 已更新
                 img: 'C9452D7DB246BDAC57629BE119C68DC7.png', 
                 intro: 'Poppin\'Party 的队长兼主唱。在那次仰望星空后，一直在寻找那一闪一闪心动的感觉 (Kirakira Dokidoki)。行动力超强的元气少女！'
             },
             'tae': {
                 name: '花园 多惠 (Hanazono Tae)', role: 'Gt.', birthday: '12月4日', color: '#0077dd',
                 img: 'IMG_1832.png', 
-                intro: '天然呆电波系的吉他手，技术超群。非常喜欢兔子。经常会说出一些让大家摸不着头脑的有趣发言。'
+                intro: '天然呆的吉他手，技术超群。非常喜欢兔子（养了20多只！）。经常会说出一些让大家摸不着头脑的有趣发言。'
             },
             'rimi': {
                 name: '牛込 里美 (Ushigome Rimi)', role: 'Ba.', birthday: '3月23日', color: '#ff88bb',
@@ -249,8 +250,9 @@
             },
             'saaya': {
                 name: '山吹 沙绫 (Yamabuki Saaya)', role: 'Dr.', birthday: '5月19日', color: '#ffaa00',
+                // 👇 已更新
                 img: 'IMG_4860.png',
-                intro: '温柔可靠的鼓手，像大姐姐一样照顾着大家。家里经营着好吃的“山吹面包坊”。'
+                intro: '温柔可靠的鼓手，像大姐姐一样照顾着大家。家里经营着好吃的“山吹烘焙坊”。'
             },
             'arisa': {
                 name: '市谷 有咲 (Ichigaya Arisa)', role: 'Key.', birthday: '10月27日', color: '#aa55dd',
@@ -259,18 +261,22 @@
             },
             'group': {
                 name: 'Poppin\'Party', role: 'Girls Band', birthday: '2月26日', color: '#ff3366',
-                img: 'IMG_0611.png', // 注意：这里如果弹窗也用全员图，确保这个文件名是有的
+                // 👇 已更新 (全员合照)
+                img: 'IMG_0611.png', 
                 intro: '为了寻找“星之鼓动”而聚集在一起的五人少女乐队！'
             }
         };
 
-        // --- 切换层级逻辑 ---
+        // --- 切换层级逻辑 (修正版) ---
         function bringToFront(cardType) {
             const visual = document.getElementById('layerVisual');
             const info = document.getElementById('layerInfo');
+
+            // 移除所有 active 状态
             visual.classList.remove('active-card');
             info.classList.remove('active-card');
 
+            // 谁被点了，谁就获得最高层级
             if (cardType === 'visual') {
                 visual.classList.add('active-card');
             } else {
@@ -289,8 +295,9 @@
             document.getElementById('modalBirthday').innerText = '🎂 ' + data.birthday;
             document.getElementById('modalIntro').innerText = data.intro;
             
-            // 默认每次打开，图片在前面
+            // 默认打开时，图片在最上面 (你可以按喜好改成 'info')
             bringToFront('visual');
+            
             modal.style.display = 'flex';
         }
 
