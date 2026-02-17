@@ -151,6 +151,96 @@
             to { transform: scale(1); opacity: 1; }
         }
     </style>
+            /* --- 角色详情卡片样式 (新) --- */
+        .modal-card {
+            background: rgba(255, 255, 255, 0.95);
+            width: 80%;
+            max-width: 700px;
+            border-radius: 20px;
+            display: flex;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            animation: popIn 0.3s ease-out;
+            flex-direction: column; /* 手机默认竖排 */
+        }
+
+        /* iPad/电脑横排适配 */
+        @media (min-width: 768px) {
+            .modal-card {
+                flex-direction: row;
+                height: 400px;
+            }
+        }
+
+        .modal-img-box {
+            flex: 1;
+            background: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .modal-img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .modal-info {
+            flex: 1;
+            padding: 30px;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        #modalName {
+            margin: 0;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .modal-role {
+            display: inline-block;
+            background: #333;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 5px;
+            font-size: 0.8em;
+            margin: 10px 0;
+        }
+
+        /* 生日标签样式 */
+        .modal-birthday {
+            font-size: 0.85em;
+            color: #888;
+            background: #fff0f5;
+            padding: 2px 8px;
+            border-radius: 5px;
+            display: inline-block;
+            font-weight: bold;
+        }
+
+        .modal-text {
+            color: #555;
+            line-height: 1.6;
+            font-size: 0.95em;
+        }
+
+        .close-btn-inner {
+            margin-top: 20px;
+            background: #eee;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            align-self: flex-start;
+            font-weight: bold;
+            color: #666;
+        }
+
 </head>
 <body>
 
@@ -186,21 +276,123 @@
         <div class="hotspot pos-group" onclick="showImage('IMG_0611.png')"></div> 
     </div>
 
-    <div id="imageModal" class="modal" onclick="closeModal()">
-        <img id="modalImg" src="" alt="Member Image">
-        <div class="close-btn">Close</div>
+        <div id="imageModal" class="modal" onclick="closeModal()">
+        <div class="modal-card" onclick="event.stopPropagation()">
+            
+            <div class="modal-img-box">
+                <img id="modalImg" src="" alt="Member">
+            </div>
+
+            <div class="modal-info">
+                <h2 id="modalName">角色名字</h2>
+                
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <div id="modalRole" class="modal-role">Role</div>
+                    <div id="modalBirthday" class="modal-birthday">🎂 Birthday</div>
+                </div>
+                
+                <p id="modalIntro" class="modal-text">这里是介绍文案...</p>
+                
+                <button class="close-btn-inner" onclick="closeModal()">Close</button>
+            </div>
+
+        </div>
     </div>
 
-    <script>
-        function showImage(filename) {
-            var modal = document.getElementById('imageModal');
-            var img = document.getElementById('modalImg');
-            img.src = filename; 
+        <script>
+        // --- 角色档案库 (增加了 birthday 字段) ---
+        const memberData = {
+            'kasumi': {
+                name: '户山 香澄 (Toyama Kasumi)',
+                role: 'Gt. & Vo.',
+                birthday: '7月14日', // 生日在这里！
+                color: '#ff3366',
+                img: 'IMG_0672.jpeg', 
+                intro: 'Poppin\'Party 的队长兼主唱。在那次仰望星空后，一直在寻找那一闪一闪心动的感觉 (Kirakira Dokidoki)。'
+            },
+            'tae': {
+                name: '花园 多惠 (Hanazono Tae)',
+                role: 'Gt.',
+                birthday: '12月4日',
+                color: '#0077dd',
+                img: 'IMG_1832.png', 
+                intro: '天然呆的吉他手，技术超群。非常喜欢兔子（养了20多只！）。经常会说出一些让大家摸不着头脑的有趣发言。'
+            },
+            'rimi': {
+                name: '牛込 里美 (Ushigome Rimi)',
+                role: 'Ba.',
+                birthday: '3月23日',
+                color: '#ff88bb',
+                img: 'IMG_1834.png',
+                intro: '有些害羞的贝斯手，最喜欢巧克力螺旋面包。虽然胆小，但在保护大家和乐队时会变得非常坚强。'
+            },
+            'saaya': {
+                name: '山吹 沙绫 (Yamabuki Saaya)',
+                role: 'Dr.',
+                birthday: '5月19日',
+                color: '#ffaa00',
+                img: 'IMG_1084.jpeg',
+                intro: '温柔可靠的鼓手，像大姐姐一样照顾着大家。家里经营着好吃的“山吹烘焙坊”。'
+            },
+            'arisa': {
+                name: '市谷 有咲 (Ichigaya Arisa)',
+                role: 'Key.',
+                birthday: '10月27日',
+                color: '#aa55dd',
+                img: '033154D2B53E9963C1B4B8D3D8D7062F.png', 
+                intro: '嘴硬心软的键盘手，典型的傲娇。虽然嘴上嫌弃香澄，但其实比谁都珍惜 Poppin\'Party。盆栽狂热爱好者。'
+            },
+            'group': {
+                name: 'Poppin\'Party',
+                role: 'Girls Band',
+                birthday: '结成日：2月26日', // 全员图我们可以写结成日或者不写
+                color: '#ff3366',
+                img: 'background.jpg',
+                intro: '为了寻找“星之鼓动”而聚集在一起的五人少女乐队！'
+            }
+        };
+
+        // --- 升级后的显示函数 ---
+        function showMember(id) {
+            const data = memberData[id];
+            const modal = document.getElementById('imageModal');
+            
+            // 填充内容
+            document.getElementById('modalImg').src = data.img;
+            document.getElementById('modalName').innerText = data.name;
+            document.getElementById('modalName').style.color = data.color; 
+            
+            document.getElementById('modalRole').innerText = data.role;
+            
+            // 新增：填充生日！
+            document.getElementById('modalBirthday').innerText = '🎂 ' + data.birthday;
+            
+            document.getElementById('modalIntro').innerText = data.intro;
+            
+            // 显示弹窗
             modal.style.display = 'flex';
         }
+        
         function closeModal() {
             document.getElementById('imageModal').style.display = 'none';
         }
+        
+        // 别忘了把之前的 toggleMusic 函数也保留在这里哦！
+        function toggleMusic() {
+            var audio = document.getElementById('bgm');
+            var btn = document.querySelector('.music-control');
+            if (audio.paused) {
+                audio.play();
+                btn.classList.add('playing');
+            } else {
+                audio.pause();
+                btn.classList.remove('playing');
+            }
+        }
+    </script>
+
+    
+    
     </script>
 
 </body>
