@@ -11,31 +11,31 @@
             padding: 0;
             width: 100%;
             height: 100%;
-            overflow: hidden; /* 禁止滚动，像个App一样 */
-            background-color: #fecfef; /* 粉色底色兜底 */
+            overflow: hidden; /* 禁止滚动 */
+            background-color: #fecfef; /* 粉色底色 */
+            font-family: -apple-system, sans-serif;
         }
 
-        /* --- 核心容器：保持图片比例，居中显示 --- */
+        /* --- 核心容器：背景图 --- */
         .container {
             position: relative;
             width: 100%;
             height: 100vh;
-            background-image: url('IMG_1841.png'); /* 你的大图 */
-            background-size: contain; /* 完整显示图片 */
+            background-image: url('background.jpg'); /* 你的大图 */
+            background-size: contain; 
             background-position: center;
             background-repeat: no-repeat;
         }
 
         /* --- 隐形热区 (Hotspots) --- */
-        /* 这些方块平时是透明的，点上去会有反应 */
         .hotspot {
             position: absolute;
-            /* border: 2px solid red;  调试用，如果你找不到位置，把这行前面的注释去掉 */
+            /* border: 2px solid red; 调试用 */
             cursor: pointer;
             z-index: 10;
         }
 
-        /* 简单的闪烁动画，提示哪里可以点 */
+        /* 热区闪烁提示 */
         .hotspot::after {
             content: '';
             display: block;
@@ -48,36 +48,18 @@
         }
         .hotspot:active::after { opacity: 1; }
 
-        /* --- 角色位置定位 (百分比定位，适应iPad和手机) --- */
-        
-        /* 1. Saaya (左上) */
+        /* --- 角色位置 (百分比定位) --- */
         .pos-saaya { top: 5%; left: 5%; width: 35%; height: 35%; }
-        
-        /* 2. Kasumi (右上) */
         .pos-kasumi { top: 5%; right: 5%; width: 35%; height: 35%; }
-        
-        /* 3. Tae (左下) */
         .pos-tae { bottom: 5%; left: 5%; width: 30%; height: 35%; }
-        
-        /* 4. Arisa (右下) */
         .pos-arisa { bottom: 5%; right: 5%; width: 30%; height: 35%; }
-        
-        /* 5. Rimi (正下中间) */
         .pos-rimi { bottom: 2%; left: 35%; width: 30%; height: 30%; }
+        .pos-group { top: 35%; left: 30%; width: 40%; height: 30%; border-radius: 50%; }
 
-        /* 6. Popipa 全员 (正中间的手势) */
-        .pos-group { 
-            top: 35%; left: 30%; 
-            width: 40%; height: 30%; 
-            border-radius: 50%; /* 中间是圆形的 */
-        }
-
-        /* --- 标题和日历入口 (放在顶部浮层) --- */
+        /* --- 顶部 UI 条 --- */
         .overlay-ui {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
+            top: 0; left: 0; width: 100%;
             padding: 10px;
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(5px);
@@ -87,7 +69,8 @@
         }
         .title { color: #ff3366; margin: 5px 0; font-size: 1.2em; }
         .subtitle { font-size: 0.8em; color: #555; }
-               /* --- 通用按钮样式 (新) --- */
+
+        /* --- 顶部按钮样式 --- */
         .ui-btn {
             display: inline-block;
             font-size: 0.85em;
@@ -96,218 +79,159 @@
             border-radius: 20px;
             transition: transform 0.2s, box-shadow 0.2s;
             font-weight: bold;
-            margin-top: 5px; /* 增加一点顶部间距 */
+            margin-top: 5px;
         }
-        
         .ui-btn:active { transform: scale(0.95); }
 
-        /* 日历按钮：蓝色系 */
         .calendar-btn {
-            color: #4285F4;
-            border: 1px solid #4285F4;
+            color: #4285F4; border: 1px solid #4285F4;
             background: rgba(66, 133, 244, 0.05);
         }
-
-        /* 故事按钮：有咲紫色系 */
         .story-btn {
-            color: #aa55dd; 
-            border: 1px solid #aa55dd;
+            color: #aa55dd; border: 1px solid #aa55dd;
             background: rgba(170, 85, 221, 0.05);
         }
 
+        /* --- 悬浮音乐按钮 --- */
+        .music-control {
+            position: fixed; top: 20px; right: 20px;
+            width: 45px; height: 45px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            border: 3px solid #ff3366;
+            display: flex; justify-content: center; align-items: center;
+            z-index: 100; cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 51, 102, 0.4);
+            font-size: 20px;
+            animation: spin 3s linear infinite;
+            animation-play-state: paused; 
+            transition: transform 0.2s;
+        }
+        .music-control:active { transform: scale(0.9); }
+        .music-control.playing {
+            animation-play-state: running;
+            background: #ff3366; color: white;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* --- 弹窗样式 (保持不变) --- */
+        /* --- 弹窗样式 (核心部分) --- */
         .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
+            display: none; /* 默认隐藏 */
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: rgba(0,0,0,0.8);
             z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
+            justify-content: center; align-items: center;
             backdrop-filter: blur(5px);
         }
-        .modal img {
-            max-width: 90%;
-            max-height: 70%;
-            border-radius: 15px;
-            box-shadow: 0 0 25px rgba(255,51,102,0.6);
-            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .close-btn {
-            margin-top: 20px;
-            color: white;
-            font-size: 16px;
-            border: 1px solid rgba(255,255,255,0.5);
-            padding: 8px 24px;
+
+        /* 角色卡片 */
+        .modal-card {
+            background: rgba(255, 255, 255, 0.95);
+            width: 80%; max-width: 700px;
             border-radius: 20px;
-            cursor: pointer;
-            background: rgba(0,0,0,0.3);
+            display: flex; overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            animation: popIn 0.3s ease-out;
+            flex-direction: column; /* 手机默认竖排 */
+        }
+        /* iPad/电脑横排适配 */
+        @media (min-width: 768px) {
+            .modal-card { flex-direction: row; height: 400px; }
+        }
+
+        .modal-img-box {
+            flex: 1; background: #eee;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
+        }
+        .modal-img-box img { width: 100%; height: 100%; object-fit: cover; }
+
+        .modal-info {
+            flex: 1; padding: 30px;
+            text-align: left;
+            display: flex; flex-direction: column; justify-content: center;
+        }
+
+        #modalName { margin: 0; font-size: 1.5em; font-weight: bold; }
+        
+        .modal-role {
+            display: inline-block; background: #333; color: white;
+            padding: 2px 8px; border-radius: 5px; font-size: 0.8em; margin: 10px 0;
+        }
+        .modal-birthday {
+            font-size: 0.85em; color: #888; background: #fff0f5;
+            padding: 2px 8px; border-radius: 5px;
+            display: inline-block; font-weight: bold;
+        }
+        .modal-text { color: #555; line-height: 1.6; font-size: 0.95em; }
+
+        .close-btn-inner {
+            margin-top: 20px; background: #eee; border: none;
+            padding: 10px 20px; border-radius: 20px;
+            cursor: pointer; align-self: flex-start;
+            font-weight: bold; color: #666;
         }
         @keyframes popIn {
             from { transform: scale(0.8); opacity: 0; }
             to { transform: scale(1); opacity: 1; }
         }
     </style>
-            /* --- 角色详情卡片样式 (新) --- */
-        .modal-card {
-            background: rgba(255, 255, 255, 0.95);
-            width: 80%;
-            max-width: 700px;
-            border-radius: 20px;
-            display: flex;
-            overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-            animation: popIn 0.3s ease-out;
-            flex-direction: column; /* 手机默认竖排 */
-        }
-
-        /* iPad/电脑横排适配 */
-        @media (min-width: 768px) {
-            .modal-card {
-                flex-direction: row;
-                height: 400px;
-            }
-        }
-
-        .modal-img-box {
-            flex: 1;
-            background: #eee;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        .modal-img-box img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .modal-info {
-            flex: 1;
-            padding: 30px;
-            text-align: left;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        #modalName {
-            margin: 0;
-            font-size: 1.5em;
-            font-weight: bold;
-        }
-
-        .modal-role {
-            display: inline-block;
-            background: #333;
-            color: white;
-            padding: 2px 8px;
-            border-radius: 5px;
-            font-size: 0.8em;
-            margin: 10px 0;
-        }
-
-        /* 生日标签样式 */
-        .modal-birthday {
-            font-size: 0.85em;
-            color: #888;
-            background: #fff0f5;
-            padding: 2px 8px;
-            border-radius: 5px;
-            display: inline-block;
-            font-weight: bold;
-        }
-
-        .modal-text {
-            color: #555;
-            line-height: 1.6;
-            font-size: 0.95em;
-        }
-
-        .close-btn-inner {
-            margin-top: 20px;
-            background: #eee;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 20px;
-            cursor: pointer;
-            align-self: flex-start;
-            font-weight: bold;
-            color: #666;
-        }
-
 </head>
 <body>
 
-        <div class="overlay-ui">
+    <audio id="bgm" loop>
+        <source src="kizuna.mp3" type="audio/mpeg">
+    </audio>
+    <div class="music-control" onclick="toggleMusic()">🎵</div>
+
+    <div class="overlay-ui">
         <h1 class="title">✨ Elysia's Popipa Base ✨</h1>
         <div class="subtitle">点击角色查看详情 | Click Members</div>
-        
         <div style="margin-top: 10px; display: flex; justify-content: center; gap: 10px;">
-            
             <a class="ui-btn calendar-btn" target="_blank" href="https://www.google.com/calendar/render?action=TEMPLATE&text=Poppin%27Party%C3%97Roselia+Joint+Live&dates=20260503T090000Z/20260503T120000Z&location=Ariake+Arena">
                 📅 Next Live
             </a>
-
-            <a class="ui-btn story-btn" target="_blank" href="star-story.pdf.pdf">
+            <a class="ui-btn story-btn" target="_blank" href="star-story.pdf">
                 📖 摘下星星的少女
             </a>
-            
         </div>
     </div>
 
-
     <div class="container">
-        <div class="hotspot pos-saaya" onclick="showImage('IMG_4860.png')"></div>
-        
-        <div class="hotspot pos-kasumi" onclick="showImage('C9452D7DB246BDAC57629BE119C68DC7.png')"></div>
-        
-        <div class="hotspot pos-tae" onclick="showImage('IMG_1832.png')"></div>
-        
-        <div class="hotspot pos-arisa" onclick="showImage('033154D2B53E9963C1B4B8D3D8D7062F.png')"></div>
-        
-        <div class="hotspot pos-rimi" onclick="showImage('IMG_1834.png')"></div>
-
-        <div class="hotspot pos-group" onclick="showImage('IMG_0611.png')"></div> 
+        <div class="hotspot pos-saaya"  onclick="showMember('saaya')"></div>
+        <div class="hotspot pos-kasumi" onclick="showMember('kasumi')"></div>
+        <div class="hotspot pos-tae"    onclick="showMember('tae')"></div>
+        <div class="hotspot pos-arisa"  onclick="showMember('arisa')"></div>
+        <div class="hotspot pos-rimi"   onclick="showMember('rimi')"></div>
+        <div class="hotspot pos-group"  onclick="showMember('group')"></div>
     </div>
 
-        <div id="imageModal" class="modal" onclick="closeModal()">
+    <div id="imageModal" class="modal" onclick="closeModal()">
         <div class="modal-card" onclick="event.stopPropagation()">
-            
             <div class="modal-img-box">
                 <img id="modalImg" src="" alt="Member">
             </div>
-
             <div class="modal-info">
                 <h2 id="modalName">角色名字</h2>
-                
                 <div style="display: flex; gap: 10px; align-items: center;">
                     <div id="modalRole" class="modal-role">Role</div>
                     <div id="modalBirthday" class="modal-birthday">🎂 Birthday</div>
                 </div>
-                
-                <p id="modalIntro" class="modal-text">这里是介绍文案...</p>
-                
+                <p id="modalIntro" class="modal-text">介绍...</p>
                 <button class="close-btn-inner" onclick="closeModal()">Close</button>
             </div>
-
         </div>
     </div>
 
-        <script>
-        // --- 角色档案库 (增加了 birthday 字段) ---
+    <script>
+        // --- 角色档案库 ---
         const memberData = {
             'kasumi': {
                 name: '户山 香澄 (Toyama Kasumi)',
                 role: 'Gt. & Vo.',
-                birthday: '7月14日', // 生日在这里！
+                birthday: '7月14日',
                 color: '#ff3366',
-                img: 'IMG_0672.jpeg', 
+                img: 'IMG_0672.jpeg', // 请确保文件名正确
                 intro: 'Poppin\'Party 的队长兼主唱。在那次仰望星空后，一直在寻找那一闪一闪心动的感觉 (Kirakira Dokidoki)。'
             },
             'tae': {
@@ -340,44 +264,37 @@
                 birthday: '10月27日',
                 color: '#aa55dd',
                 img: '033154D2B53E9963C1B4B8D3D8D7062F.png', 
-                intro: '嘴硬心软的键盘手，典型的傲娇。虽然嘴上嫌弃香澄，但其实比谁都珍惜 Poppin\'Party。盆栽狂热爱好者。'
+                intro: '嘴硬心软的键盘手，典型的傲娇。虽然嘴上嫌弃香澄，但其实比谁都珍惜 Poppin\'Party。'
             },
             'group': {
                 name: 'Poppin\'Party',
                 role: 'Girls Band',
-                birthday: '结成日：2月26日', // 全员图我们可以写结成日或者不写
+                birthday: '2月26日',
                 color: '#ff3366',
                 img: 'background.jpg',
                 intro: '为了寻找“星之鼓动”而聚集在一起的五人少女乐队！'
             }
         };
 
-        // --- 升级后的显示函数 ---
+        // --- 逻辑函数 ---
         function showMember(id) {
             const data = memberData[id];
             const modal = document.getElementById('imageModal');
             
-            // 填充内容
             document.getElementById('modalImg').src = data.img;
             document.getElementById('modalName').innerText = data.name;
-            document.getElementById('modalName').style.color = data.color; 
-            
+            document.getElementById('modalName').style.color = data.color;
             document.getElementById('modalRole').innerText = data.role;
-            
-            // 新增：填充生日！
             document.getElementById('modalBirthday').innerText = '🎂 ' + data.birthday;
-            
             document.getElementById('modalIntro').innerText = data.intro;
             
-            // 显示弹窗
             modal.style.display = 'flex';
         }
-        
+
         function closeModal() {
             document.getElementById('imageModal').style.display = 'none';
         }
-        
-        // 别忘了把之前的 toggleMusic 函数也保留在这里哦！
+
         function toggleMusic() {
             var audio = document.getElementById('bgm');
             var btn = document.querySelector('.music-control');
@@ -389,10 +306,6 @@
                 btn.classList.remove('playing');
             }
         }
-    </script>
-
-    
-    
     </script>
 
 </body>
