@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090d22">
+  <meta name="description" content="一片装着生活记录、Poppin’Party、J-pop、动漫、旅行、山水自然和轻小说的小宇宙。">
+  <title>我的小宇宙 · Star Garden</title>
+  <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
+  <link rel="stylesheet" href="./style.css">
+  <script src="./content.js" defer></script>
+  <script src="./script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到正文</a>
+  <div class="sky" aria-hidden="true"></div>
+  <div class="light-points" aria-hidden="true"></div>
+  <header class="header wrap">
+    <a class="brand" href="#home"><span class="brand-star" aria-hidden="true">✧</span><span>Star Garden<small>我的小宇宙</small></span></a>
+    <nav aria-label="主导航"><a href="#about">关于我</a><a href="#interests">兴趣坐标</a><a href="#journal">生活记录</a></nav>
+    <button class="motion-button" type="button" aria-pressed="false" aria-label="暂停光点动画"><span aria-hidden="true">✦</span><span class="motion-label">光点漫游中</span></button>
+  </header>
+  <main id="main">
+    <section class="hero wrap" id="home" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow"><span></span> A SMALL CORNER OF MY UNIVERSE</p>
+        <h1 id="hero-title">把日常，<br><span>收藏进星空。</span></h1>
+        <p class="hero-description">喜欢的歌、故事与风景，<br>还有那些想慢慢记住的日子。</p>
+        <a class="primary-link" href="#journal">翻开生活记录 <span aria-hidden="true">✧</span></a>
+        <p class="hero-footnote">不必每一天都闪耀。平凡的瞬间也值得收藏。</p>
+      </div>
+      <aside class="identity" id="about" aria-labelledby="about-title">
+        <div class="identity-top"><span class="small-label">HELLO, WORLD</span><span aria-hidden="true">✦</span></div>
+        <div class="profile-mark" aria-hidden="true">✧</div>
+        <h2 id="about-title">欢迎来到<br>我的小宇宙</h2>
+        <p id="profile-intro"></p>
+        <div class="identity-divider"></div>
+        <span class="small-label">我的关键词</span>
+        <div class="profile-tags" id="profile-tags"></div>
+        <a id="github-link" class="profile-link" href="https://github.com/Ichigayaayasarisa" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span><span class="sr-only">，在新标签页打开</span></a>
+      </aside>
+      <div class="hero-bottom"><span>记录生活 · 收集喜欢 · 偶尔发呆</span><a href="#interests">继续往下看看 <span aria-hidden="true">⌄</span></a></div>
+    </section>
+    <section class="interests-section wrap" id="interests" aria-labelledby="interests-title">
+      <div class="section-heading"><div><p class="eyebrow">01 / LITTLE OBSESSIONS</p><h2 id="interests-title">我的兴趣坐标<span>喜欢，是一种引力。</span></h2></div><p>不同的喜欢，<br>组成同一个我。</p></div>
+      <div class="interest-grid" id="interest-grid"></div>
+    </section>
+    <section class="journal-section wrap" id="journal" aria-labelledby="journal-title">
+      <div class="section-heading"><div><p class="eyebrow">02 / DAYS TO REMEMBER</p><h2 id="journal-title">生活的碎片<span>把一点点日常，留在这里。</span></h2></div><span class="journal-count" id="journal-count"></span></div>
+      <div class="journal-list" id="journal-list"></div>
+      <p class="journal-end"><span aria-hidden="true">✧</span> 下一段故事，留给下一个想记录的瞬间。</p>
+    </section>
+    <section class="closing wrap" aria-label="页尾寄语"><span aria-hidden="true">✦</span><p>世界很大，<br>这里刚好放得下我的喜欢。</p><a href="#home">回到星空</a></section>
+  </main>
+  <footer class="footer wrap"><span>© <span id="year"></span> 我的小宇宙</span><span>音乐 · 故事 · 远方</span><a href="https://ichigayaayasarisa.github.io/" target="_blank" rel="noopener noreferrer">旧花园入口 <span class="sr-only">，在新标签页打开</span></a></footer>
+</body>
+</html>
